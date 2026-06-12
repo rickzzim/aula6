@@ -1,63 +1,56 @@
 # aula6
-# 🎵 Processamento de Sinais I — Aula Prática 6: Projeto de Filtros IIR
+# Processamento de Sinais I — Aula Prática 6: Projeto de Filtros IIR
 
-Este repositório contém a resolução computacional completa e o relatório técnico da **Aula Prática 6 (AP6)**, focada no **Projeto, Análise e Implementação de Filtros IIR (Resposta ao Impulso Infinita)** utilizando blocos estruturais de 2ª ordem (Seções de Segunda Ordem - SOS).
+Este repositório contém os códigos e o relatório técnico da Aula Prática 6 (AP6), cujo tema principal é o Projeto, Análise e Implementação de Filtros Digitais com Resposta ao Impulso Infinita (IIR) utilizando Seções de Segunda Ordem (SOS). 
 
-O projeto aborda desde a síntese geométrica elementar no Plano Z até a restauração de um sinal de áudio real corrompido, avaliando os impactos da topologia estrutural e da quantização de coeficientes em ponto fixo.
-
----
-
-## 🚀 Estrutura do Repositório
-
-* 📁 `codigos/` : Scripts em Python (`.py` ou `.ipynb`) contendo a implementação de todos os filtros, rotinas de quantização e processamento do áudio.
-* 📁 `audio/` : Arquivo original (`handel.wav`), sinais contaminados matematicamente e arquivos resultantes pós-filtragem para fins de auditoria acústica.
-* 📁 `graficos/` : Curvas de resposta em magnitude (dB), diagramas de polos e zeros e análise espectral via FFT gerados pelas simulações.
-* 📄 `Relatorio_Aula_Pratica_6.docx` : Documento técnico completo formatado com as justificativas matemáticas e análises exigidas pelo roteiro.
-* 📄 `README.md` : Este guia de navegação rápida para o professor.
+O trabalho aborda desde os conceitos geométricos elementares no Plano Z até a restauração de um sinal de áudio real corrompido, avaliando os impactos de diferentes topologias e da quantização de coeficientes em ponto fixo.
 
 ---
 
-## 📈 O que o Professor vai encontrar em cada Questão?
+## Estrutura do Repositório
+
+* codigos/ : Contém os scripts em Python com as rotinas de projeto de filtros, gráficos e processamento.
+* audio/ : Contém o ficheiro original (handel.wav) e os ficheiros gerados pós-filtragem.
+* graficos/ : Gráficos de magnitude, fase, planos de polos e zeros e análise FFT.
+* Relatorio_PDS.docx : Relatório técnico completo com as devidas justificativas e equações matemáticas.
+* README.md : Este documento com a descrição geral do projeto.
+
+---
+
+## Conteúdo do Projeto por Questão
 
 ### Questão 1: Blocos Componentes Básicos de 2ª Ordem
-A análise da influência geométrica do raio dos polos ($r \in \{0.8, 0.9, 0.98\}$) sobre quatro estruturas fundamentais amostradas a $f_s = 20\text{ kHz}$:
-* **(a) Passa-Baixas ($f_c = 1000\text{ Hz}$):** Polos complexos com zeros em Nyquist ($z = -1$).
-* **(b) Passa-Altas ($f_c = 2000\text{ Hz}$):** Polos complexos com zeros em DC ($z = 1$).
-* **(c) Passa-Faixas ($f_c = 7000\text{ Hz}$):** Zeros distribuídos em $z = \pm 1$.
-* **(d) Notch Filter ($f_c = 3000\text{ Hz}$):** Zeros de transmissão posicionados rigorosamente sobre o círculo unitário ($|z| = 1$).
-* *Foco da Avaliação:* Demonstração analítica de como o aumento de $r$ eleva a **seletividade**, estreita a **largura de banda**, mas estende o tempo de acomodação da resposta ao impulso.
+Implementação e análise detalhada de quatro estruturas básicas de segunda ordem operando em fs = 20000 Hz, variando o raio dos polos (r) em 0.8, 0.9 e 0.98:
+* (a) Filtro Passa-Baixas (fc = 1000 Hz) com zeros em Nyquist.
+* (b) Filtro Passa-Altas (fc = 2000 Hz) com zeros em DC.
+* (c) Filtro Passa-Faixas (fc = 7000 Hz) com zeros em z = 1 e z = -1.
+* (d) Filtro Notch (fc = 3000 Hz) com zeros sobre o círculo unitário.
+O objetivo desta etapa foi demonstrar como o parâmetro r afeta diretamente a seletividade, a largura de banda e o tempo de acomodação do sistema.
 
-### Questão 2: Filtro Passa-Faixas em Cascata ($6000\text{ Hz}$ a $8000\text{ Hz}$)
-* **Topologia:** Multiplicação de funções de transferência de 2ª ordem (Passa-Altas $\times$ Passa-Baixas) resultando em um sistema de 4ª ordem.
-* *Foco da Avaliação:* Comparação de desempenho evidenciando a formação de uma banda passante plana com transições de rejeição significativamente mais íngremes do que as seções isoladas de 2ª ordem.
+### Questão 2: Filtro Passa-Faixas em Cascata (6000 Hz a 8000 Hz)
+Desenvolvimento de uma estrutura composta de quarta ordem obtida pela associação em cascata (multiplicação) de um bloco passa-altas e um bloco passa-baixas de segunda ordem. Os resultados demonstram a obtenção de uma banda passante mais plana e uma transição de rejeição mais íngreme.
 
-### Questão 3: Filtro Rejeita-Faixas em Paralelo ($1000\text{ Hz}$ a $4000\text{ Hz}$)
-* **Topologia:** Soma algébrica de um bloco Passa-Baixas e um Passa-Altas.
-* *Foco da Avaliação:* **Discussão teórica crucial sobre fase não linear.** O código demonstra que a soma puxa os zeros para *fora do círculo unitário*, gerando uma atenuação fraca na banda de rejeição (~ -5 dB). Prova por que a topologia paralela direta falha em criar "vales" profundos sem técnicas de equalização de fase.
+### Questão 3: Filtro Rejeita-Faixas em Paralelo (1000 Hz a 4000 Hz)
+Implementação de um filtro rejeita-faixas por meio da associação em paralelo (soma) de estruturas passa-baixas e passa-altas. Esta questão traz uma discussão teórica importante sobre o efeito da fase não linear, evidenciando por que a soma desloca os zeros para fora do círculo unitário e limita a atenuação na banda de rejeição a apenas cerca de -5 dB.
 
-### Questão 4: Sensibilidade da Quantização de Coeficientes
-* **Metodologia:** Redução da palavra digital para $b \in \{4, 8, 16\}$ bits comparando a **Forma Direta Completa** (polinômio expandido) versus a **Forma em Blocos (SOS)**.
-* *Foco da Avaliação:* Demonstração prática da Instabilidade de Wilkinson. Sob quantização severa de 4 bits, a Forma Direta sofre degradação catastrófica e deslocamento caótico de polos, enquanto a estrutura em blocos SOS preserva a integridade do contorno e a estabilidade assintótica.
+### Questão 4: Sensibilidade e Impacto da Quantização de Coeficientes
+Estudo comparativo dos efeitos de palavra digital de precisão finita em resoluções de 4, 8 e 16 bits. Os testes contrapõem o comportamento da Forma Direta Completa em relação à Forma em Blocos (SOS), ilustrando de forma prática o fenómeno da Instabilidade de Wilkinson, onde a forma em blocos prova ser muito mais robusta contra erros de arredondamento.
 
-### Questão 5: Restauração de Áudio Real (`handel.wav`)
-Processamento real do sinal corrompido pela equação analítica:
-$$y(t) = x(t) + 0.05\cos(200\pi t) + 0.075\sin(4000\pi t) + n(t)$$
-
-* **Mapeamento de Interferências:** Identificação exata de tons espúrios em $100\text{ Hz}$ (zumbido grave) e $2000\text{ Hz}$ (apito agudo), além do ruído branco gaussiano.
-* **Filtragem:** Projeto de uma cascata em série de dois filtros *Notch IIR de 2ª ordem* ($r = 0.98$) sintonizados nas frequências exatas.
-* **Métricas Quantitativas Computadas:** Tabela comparativa de **SNR (dB)** e **MSE** para as variâncias $\sigma^2 \in \{0.01, 0.1, 1.0\}$.
-* **Avaliação Subjetiva:** Discussão sobre o restabelecimento da inteligibilidade do coro clássico "Aleluia" e os limites lineares frente ao ruído branco interno à banda.
-* **Análise de Hardware (Quantização):** Avaliação de estabilidade em $2, 4, 8$ e $16$ bits, comprovando o travamento de polos e zeros na estrutura SOS.
+### Questão 5: Processamento de Sinal de Áudio Real (handel.wav)
+Aplicação prática dos conceitos estudados na recuperação do ficheiro clássico de Handel corrompido por duas senoides analíticas e ruído branco. O projeto inclui:
+* Mapeamento espectral das frequências de interferência em 100 Hz e 2000 Hz.
+* Implementação de uma cascata de dois filtros Notch IIR de segunda ordem com r = 0.98.
+* Levantamento estatístico de métricas quantitativas (SNR em dB e MSE) para as diferentes variâncias de ruído propostas (0.01, 0.1 e 1.0).
+* Análise subjetiva de áudio focada na inteligibilidade do coro musical.
+* Teste de quantização do filtro em 2, 4, 8 e 16 bits para avaliação de estabilidade.
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
-* **Linguagem:** Python 3.x
-* **Bibliotecas Core:** `numpy`, `scipy.signal` (projeto de filtros, transformações Z e convoluções), `matplotlib.pyplot` (geração de gráficos), `scipy.io.wavfile` (I/O de áudio digital).
+## Tecnologias e Ferramentas
+* Linguagem de Programação: Python 3
+* Bibliotecas principais: numpy, scipy.signal, matplotlib
 
 ---
 
-## 🎯 Conclusões Principais do Trabalho
-1. Filtros IIR alcançam excelente seletividade com ordens muito inferiores às de filtros FIR equivalentes.
-2. A associação paralela de blocos IIR básicos altera destrutivamente a posição dos zeros devido ao descasamento de fase natural de sistemas recursivos.
-3. A implementação em **Seções de Segunda Ordem (SOS) em Cascata** é o padrão industrial obrigatório para mitigar o ruído de quantização e assegurar a estabilidade de filtros em processadores de ponto fixo comerciais.
+## Conclusões Gerais
+O projeto permitiu validar que os filtros IIR alcançam excelente seletividade com ordens computacionais baixas. No entanto, demonstrou-se também a sensibilidade dessas estruturas a perturbações de fase e erros numéricos, consolidando a arquitetura em Seções de Segunda Ordem (SOS) em Cascata como a solução padrão para garantir estabilidade e fidelidade em sistemas de processamento comercial.
